@@ -23,4 +23,17 @@ class ofApp : public ofBaseApp{
 		
     ofEasyCam cam;
     ofImage img;
+    
+    float x, y;     //中心点の座標
+    float R;        //半径
+    float theta;    
+    float rad;
+    
+    float position;　//初期位置
+    float time;     //経過時間
+    
+    float A1, A2, A3;  //振幅
+    float w1, w2;      //角周波数（周期）
+    
+    
    };
