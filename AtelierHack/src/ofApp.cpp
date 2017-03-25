@@ -2,7 +2,12 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    
+    ofBackground(0, 0, 0);
+    ofSetVerticalSync(true);
+    ofEnableAlphaBlending();
+    ofToggleFullscreen();
+    img.load("particle32.png");
 }
 
 //--------------------------------------------------------------
@@ -12,7 +17,13 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    
+    cam.begin();
+    //フレーム毎に画像の色が変わる
+    ofSetColor(ofColor::fromHsb(ofGetFrameNum()%255, 255, 255) ,255);
+    img.draw(0,0,500);
+    cam.end();
+    
 }
 
 //--------------------------------------------------------------

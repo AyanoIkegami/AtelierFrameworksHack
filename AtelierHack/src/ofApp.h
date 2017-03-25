@@ -1,5 +1,5 @@
 #pragma once
-
+#define NUM 100
 #include "ofMain.h"
 
 class ofApp : public ofBaseApp{
@@ -21,4 +21,6 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-};
+    ofEasyCam cam;
+    ofImage img;
+   };
