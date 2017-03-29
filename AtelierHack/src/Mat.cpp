@@ -15,7 +15,9 @@ void Mat::setup(bool isMirror){
 }
 
 void Mat::update(){
-    
+     for(int i = 0 ; i < TRIANGLE_NUM; i++){
+         mTriangles[i].update();
+     }
 }
 
 void Mat::draw(){
@@ -24,6 +26,3 @@ void Mat::draw(){
     }
 }
 
-void Mat::rotateX(){
-    
-}
