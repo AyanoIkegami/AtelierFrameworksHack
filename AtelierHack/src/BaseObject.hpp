@@ -43,9 +43,14 @@ protected:
     static int MAX_LENGTH;
     //重心の位置
     ofVec2f mGravityPoint;
+    //経過時間
+    int mTime = 0 ;
+    int mI = 1;
     //以下音から取るもの
     //２次元座標(ランダムでもいいかも）
     ofVec2f mPosition;
+    //初期位置
+    ofVec2f mFirstPosition;
     //速度
     ofVec2f mVelocity;
     //色
@@ -64,8 +69,6 @@ protected:
     float mRadius;
     //位相
     float mPhase;
-    //経過時間
-    float mTime;
     
   
     
