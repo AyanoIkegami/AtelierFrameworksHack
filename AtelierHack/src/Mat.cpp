@@ -7,6 +7,10 @@
 //
 
 #include "Mat.hpp"
+
+Mat::Mat(){
+    
+}
 void Mat::setup(bool isMirror,std::vector<BaseObject> objs){
     mObjects = objs;
      for(int i = 0 ; i < TRIANGLE_NUM; i++){

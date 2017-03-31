@@ -13,11 +13,11 @@ class BaseObject{
 public:
     static const int NUM_TRIANGLE_POINT = 3;
     virtual void setup(string imageName,int index);
-    virtual void setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT],ofVec2f gravityPoint);
-    virtual void setupLeftPosition(ofVec2f leftPosition);
+    virtual void setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT]);
+    virtual void setupRightPosition(ofVec2f rightPosition);
     virtual void update();
     virtual void draw();
-
+    virtual void setVelocity(ofVec2f vector);
        //エフェクト数
     static const int NUM_EFFECT = 4;
      //エフェクト適用するかどうかのフラグ配列
@@ -26,7 +26,7 @@ public:
     bool mIsMirror;
     //２次元座標(ランダムでもいいかも）
     ofVec2f mPosition;
-    ofVec2f mLeftPosition;
+    ofVec2f mRightPosition;
 
 protected:
     //ポジション移動
@@ -48,13 +48,6 @@ protected:
     int mIndex;
     //自身が属する三角形の頂点
     ofVec2f mTrianglePoints[NUM_TRIANGLE_POINT];
-    //自身が属する三角形の辺を表す方程式に用いる変数
-    float mLinearA[NUM_TRIANGLE_POINT];
-    float mLinearB[NUM_TRIANGLE_POINT];
-    //重心からの最大の距離
-    static int MAX_LENGTH;
-    //重心の位置
-    ofVec2f mGravityPoint;
     //経過時間
     int mTime = 0 ;
     int mI = 1;

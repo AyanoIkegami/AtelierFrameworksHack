@@ -20,16 +20,22 @@ void BaseObject::setup(string imageName,int index){
  
 }
 
-void BaseObject::setupLeftPosition(ofVec2f leftPosition){
-    mLeftPosition = leftPosition;
-    mPosition = leftPosition;
+void BaseObject::setupRightPosition(ofVec2f RightPosition){
+    mRightPosition = RightPosition;
+    mPosition = RightPosition;
+    if(mIndex!=0){
+        move();
+    }
 }
 
-void BaseObject::setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT], ofVec2f gravityPoint){
+void BaseObject::setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT]){
     for(int i = 0; i < NUM_TRIANGLE_POINT; i++){
         mTrianglePoints[i] = trianglePoints[i];
     }
-    move();
+}
+
+void BaseObject::setVelocity(ofVec2f velocity){
+    mVelocity = velocity;
 }
 
 void BaseObject::update(){
@@ -38,23 +44,22 @@ void BaseObject::update(){
    // circularMotion();
   //  wave();
     mTime += 1 * mI;
-    if(mIndex != 0){
-    move();
-    }else{
+    if(mIndex == 0){
         mPosition += mVelocity;
     }
 }
 
 void BaseObject::move(){
-    ofVec2f underPosition = ofVec2f(mLeftPosition.x,ofGetHeight()/2);
-    float sinTheta = abs(mLeftPosition.y - ofGetHeight()/2);
-    float cosTheta = abs(mLeftPosition.x - ofGetWidth()/2);
-    float r = sqrt(pow(sinTheta, 2)+pow(cosTheta,2));
-    float cosRadian = (pow(cosTheta,2)+pow(sinTheta,2)-pow(r,2))/(2*cosTheta*sinTheta);
-    float theta = acos(cosRadian);
-    mPosition.x = ofGetWidth()/2 + r * cos(theta + 60 * mIndex);
-    mPosition.y = ofGetHeight()/2 + r * sin(theta + 60 * mIndex);
-
+    float yLength = ofGetHeight()/2 -  mRightPosition.y;
+    float xLength = mRightPosition.x - ofGetWidth()/2;
+    float r = sqrt(pow(xLength, 2)+pow(yLength,2));
+    float sinTheta = yLength / r;
+    float cosTheta = xLength / r;
+    float radian = acos(cosTheta) +((60 *  mIndex) * PI / 180);
+    float cosRadian = cos(radian);
+    float sinRadian = sin(radian);
+    mPosition.x = ofGetWidth()/2 + r * cos(radian);
+    mPosition.y = ofGetHeight()/2 + r * sin(radian);
 }
 
 void BaseObject::draw(){

@@ -1,14 +1,15 @@
 #pragma once
 #define NUM 100
 #include "ofMain.h"
-
+#include "MatTriangle.hpp"
+#include "BaseObject.hpp"
+#include <vector>
 class ofApp : public ofBaseApp{
 
 	public:
 		void setup();
 		void update();
 		void draw();
-
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );
@@ -21,7 +22,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-    ofImage img;
+  /*  ofImage img;
     
     float mX, mY;     //中心点の座標
     float mR;        //半径
@@ -32,7 +33,12 @@ class ofApp : public ofBaseApp{
     float mTime;     //経過時間
     
     float mA1, mA2, mA3;  //振幅
-    float mW1, mW2;      //角周波数（周期）
+    float mW1, mW2;      //角周波数（周期）*/
     
+private:
+    int mObjectNum;
+    static const int MAT_NUM = 2;
+    static const int TRIANGLE_NUM = 3;
+    MatTriangle mTriangles[TRIANGLE_NUM * MAT_NUM];
     
    };
