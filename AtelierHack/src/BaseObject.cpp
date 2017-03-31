@@ -6,50 +6,66 @@
 //
 //
 #include "BaseObject.hpp"
-void BaseObject::setup(string imageName,ofVec2f position){
+void BaseObject::setup(string imageName,int index){
     mImg.load(imageName);
     mRadius = 50;
-    mPosition = position;
+   // mPosition = position;
+    mIndex = index;
     mVelocity = ofVec2f(ofRandom(-5,5),ofRandom(-5,5));
     mAmplitude = 25;
     mCycle = 1;
-    mFirstPosition = position;
+    mFirstPosition = mPosition;
     mTheta = 0;
     mRadian = (TWO_PI/60)/6;  //6秒１回転。
  
 }
 
-void BaseObject::setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT],float linearA[NUM_TRIANGLE_POINT],float linearB[NUM_TRIANGLE_POINT], ofVec2f gravityPoint){
+void BaseObject::setupLeftPosition(ofVec2f leftPosition){
+    mLeftPosition = leftPosition;
+    mPosition = leftPosition;
+}
+
+void BaseObject::setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT], ofVec2f gravityPoint){
     for(int i = 0; i < NUM_TRIANGLE_POINT; i++){
         mTrianglePoints[i] = trianglePoints[i];
     }
+    move();
 }
 
 void BaseObject::update(){
-    reflect();
-    stretch();
+  //  reflect();
+    //stretch();
    // circularMotion();
+  //  wave();
     mTime += 1 * mI;
+    if(mIndex != 0){
+    move();
+    }else{
+        mPosition += mVelocity;
+    }
+}
+
+void BaseObject::move(){
+    ofVec2f underPosition = ofVec2f(mLeftPosition.x,ofGetHeight()/2);
+    float sinTheta = abs(mLeftPosition.y - ofGetHeight()/2);
+    float cosTheta = abs(mLeftPosition.x - ofGetWidth()/2);
+    float r = sqrt(pow(sinTheta, 2)+pow(cosTheta,2));
+    float cosRadian = (pow(cosTheta,2)+pow(sinTheta,2)-pow(r,2))/(2*cosTheta*sinTheta);
+    float theta = acos(cosRadian);
+    mPosition.x = ofGetWidth()/2 + r * cos(theta + 60 * mIndex);
+    mPosition.y = ofGetHeight()/2 + r * sin(theta + 60 * mIndex);
+
 }
 
 void BaseObject::draw(){
-   // ofDrawCircle(mPosition, 10);
+    ofDrawCircle(mPosition, 10);
    // mImg.draw(mPosition, mPosition.y, mPosition.y);
-    mImg.draw(mPosition,mRadius,mRadius);
+    //mImg.draw(mPosition,mRadius,mRadius);
    // mImg.draw(mPosition.x, mPosition.y, 50,50);
 }
 
 void BaseObject::reflect(){
     mVelocity *= judgeInOrOut();
-   /* if(judgeInOrOut() == ofVec2f(-1,-1)){
-        float valueX = mVelocity.x / abs(mVelocity.x);
-        float valueY = mVelocity.y / abs(mVelocity.y);
-        Velocity.x = (mPosition.x + 30 * cos(ofRandom(180)))/ofGetFrameRate() * valueX;
-      　mVelocity.y = (mPosition.y + 30 * sin(ofRandom(180)))/ofGetFrameRate() * valueY;
-       // mVelocity.x = ofRandom(3) * valueX;
-       // mVelocity.y = ofRandom(3) * valueY;
-    }*/
-    
     mPosition += mVelocity;
 }
 
@@ -92,7 +108,6 @@ void BaseObject::circularMotion(){
     mPosition.y = -mRadius*sin(mTheta) + mFirstPosition.y;
     mTheta += mRadian; //時間を進める
     if (mTheta >= TWO_PI) mTheta = 0;
-
 }
 
 void BaseObject::blink(){
@@ -103,7 +118,7 @@ void BaseObject::blink(){
 
 void BaseObject::stretch(){
     //伸縮
-    mRadius = mAmplitude + mTime ;//*sin(mTime) +100;
+    mRadius = mAmplitude + mTime;//*sin(mTime) +100;
   //  mPosition = mFirstPosition - mRadius* 0.5;
     if (mTime > TWO_PI*6){
         mI = -1;
@@ -113,5 +128,17 @@ void BaseObject::stretch(){
         mI = 1;
     }
 }
+
+void BaseObject::wave(){
+    mPosition.x = mTime*100;
+    mPosition.y = mAmplitude* sin(mTime + mPosition.y);
+    mImg.draw(mPosition.x+ofGetWidth()/4, mPosition.y + ofGetHeight()/2, 50);
+    //time += rad;    //時間を進める
+    mTime += mCycle * mRadian;
+    if (mTime > TWO_PI) mCycle = -1;
+    if(mTime <= 0) mCycle = 1;
+
+}
+
 
 

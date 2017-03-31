@@ -9,10 +9,11 @@
 #include <stdio.h>
 #include "ofMain.h"
 #include "MatTriangle.hpp"
-
+#include "BaseObject.hpp"
+#include <vector>
 class Mat {
 public:
-    void setup(bool isMirror);
+    void setup(bool isMirror, std::vector<BaseObject> objs);
     void update();
     void draw();
     void rotateX();
@@ -21,4 +22,5 @@ private:
     MatTriangle mTriangles[TRIANGLE_NUM];
     ofVec2f mMatPosition; //台紙の基準となる位置
     bool mIsMirror;
+    std::vector<BaseObject> mObjects;
 };

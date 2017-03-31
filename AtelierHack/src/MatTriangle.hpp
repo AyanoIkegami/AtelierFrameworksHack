@@ -9,11 +9,11 @@
 #include <stdio.h>
 #include "ofMain.h"
 #include "BaseObject.hpp"
-
+#include <vector>
 class MatTriangle{
 public:
     enum E_TRIANGLE_POSITION {LEFT,CENTER,RIGHT};
-    void setup(E_TRIANGLE_POSITION ePosition, bool isMirror);
+    void setup(E_TRIANGLE_POSITION ePosition, bool isMirror,std::vector<BaseObject> objs);
     void update();
     void draw();
     constexpr static const float LENGTH = 300;
@@ -27,6 +27,8 @@ private:
     float getA();
     float getB();
     ofVec2f linearFunction(ofVec2f firstPosition, ofVec2f secondPosition,int index);
+    std::vector<BaseObject> mLeftObjects;
+    std::vector<BaseObject> mObjects;
     //方程式変数
     float mA[3],mB[3];
     ofVec2f mPositions[3];
@@ -35,5 +37,5 @@ private:
     bool mIsMirror;
     bool mIsCenterY;
     int mParticleNum;
-    BaseObject mParticles[1];
+    //BaseObject mParticles[1];
 };

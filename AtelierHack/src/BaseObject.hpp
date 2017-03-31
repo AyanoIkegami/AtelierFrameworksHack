@@ -12,17 +12,25 @@
 class BaseObject{
 public:
     static const int NUM_TRIANGLE_POINT = 3;
-    virtual void setup(string imageName,ofVec2f position);
-    virtual void setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT],float linearA[NUM_TRIANGLE_POINT],float linearB[NUM_TRIANGLE_POINT],ofVec2f gravityPoint);
+    virtual void setup(string imageName,int index);
+    virtual void setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT],ofVec2f gravityPoint);
+    virtual void setupLeftPosition(ofVec2f leftPosition);
     virtual void update();
     virtual void draw();
+
        //エフェクト数
     static const int NUM_EFFECT = 4;
      //エフェクト適用するかどうかのフラグ配列
     static const int LENGTH = 300;
     bool isUseEffects[NUM_EFFECT];
     bool mIsMirror;
+    //２次元座標(ランダムでもいいかも）
+    ofVec2f mPosition;
+    ofVec2f mLeftPosition;
+
 protected:
+    //ポジション移動
+    void move();
     //反射
     virtual void reflect();
     //反射を実装するための一次関数
@@ -34,6 +42,10 @@ protected:
     virtual void blink();
     //伸縮
     virtual void stretch();
+    //波
+    virtual void wave();
+    
+    int mIndex;
     //自身が属する三角形の頂点
     ofVec2f mTrianglePoints[NUM_TRIANGLE_POINT];
     //自身が属する三角形の辺を表す方程式に用いる変数
@@ -47,8 +59,6 @@ protected:
     int mTime = 0 ;
     int mI = 1;
     //以下音から取るもの
-    //２次元座標(ランダムでもいいかも）
-    ofVec2f mPosition;
     //初期位置
     ofVec2f mFirstPosition;
     //速度
