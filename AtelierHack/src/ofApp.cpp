@@ -7,9 +7,9 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofEnableAlphaBlending();
   //  ofToggleFullscreen();
-    ofSetFrameRate(60);
+    ofSetFrameRate(10);
     bool isMirror = false;
-    int mObjectNum = 1;//ofRandom(1,10);
+    int mObjectNum = 1;// ofRandom(1,10);
     for(int i = 0; i < MAT_NUM; i ++){
         for (int j = 0; j < TRIANGLE_NUM; j++) {
             mTriangles[j+3*i].setup((MatTriangle::E_TRIANGLE_POSITION)j,isMirror,mObjectNum);

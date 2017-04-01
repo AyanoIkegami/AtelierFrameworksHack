@@ -11,7 +11,7 @@ void BaseObject::setup(string imageName,int index){
     mRadius = 50;
    // mPosition = position;
     mIndex = index;
-    mVelocity = ofVec2f(ofRandom(-5,5),ofRandom(-5,5));
+  //  mVelocity = ofVec2f(ofRandom(-5,5),ofRandom(-5,5));
     mAmplitude = 25;
     mCycle = 1;
     mFirstPosition = mPosition;
@@ -35,18 +35,20 @@ void BaseObject::setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT]
 }
 
 void BaseObject::setVelocity(ofVec2f velocity){
+    mRightVector = velocity;
     mVelocity = velocity;
 }
 
 void BaseObject::update(){
-  //  reflect();
-    //stretch();
+    // stretch();
    // circularMotion();
   //  wave();
     mTime += 1 * mI;
-    if(mIndex == 0){
+    //if(mIndex == 0){
         mPosition += mVelocity;
-    }
+ //   }
+//      reflect();
+
 }
 
 void BaseObject::move(){
@@ -55,18 +57,28 @@ void BaseObject::move(){
     float r = sqrt(pow(xLength, 2)+pow(yLength,2));
     float sinTheta = yLength / r;
     float cosTheta = xLength / r;
-    float radian = acos(cosTheta) +((60 *  mIndex) * PI / 180);
+    float radian = -acos(cosTheta) -((60 *(mIndex)) * PI / 180);
     float cosRadian = cos(radian);
     float sinRadian = sin(radian);
     mPosition.x = ofGetWidth()/2 + r * cos(radian);
     mPosition.y = ofGetHeight()/2 + r * sin(radian);
+    
+    //方向計算
+    //速度ベクトルの長さ
+    float length = sqrt(pow(mRightVector.x,2)+pow(mRightVector.y, 2));
+    float vRadian = /*acos(mRightVector.x / length) +*/ - (60 * (mIndex) * PI / 180);
+    mVelocity.x = mRightVector.x * cos(vRadian) - mRightVector.y * sin(vRadian);
+    mVelocity.y = mRightVector.x * sin(vRadian) + mRightVector.y * cos(vRadian);
 }
 
 void BaseObject::draw(){
-    ofDrawCircle(mPosition, 10);
+    //ofDrawCircle(mPosition, 10);//+mIndex*5);
    // mImg.draw(mPosition, mPosition.y, mPosition.y);
-    //mImg.draw(mPosition,mRadius,mRadius);
-   // mImg.draw(mPosition.x, mPosition.y, 50,50);
+ //   mImg.draw(mPosition,mRadius,mRadius);
+   //mImg.draw(mPosition.x, mPosition.y, 50,50);
+    ofPoint p = ofPoint(mPosition.x-mRadius/2,mPosition.y-mRadius/2);
+    
+    mImg.draw(p, mRadius, mRadius);
 }
 
 void BaseObject::reflect(){
@@ -145,5 +157,12 @@ void BaseObject::wave(){
 
 }
 
+ofVec2f BaseObject::getVelocity(){
+    return mVelocity;
+}
+
+void BaseObject::setRightVector(ofVec2f vector){
+    mRightVector = vector;
+}
 
 

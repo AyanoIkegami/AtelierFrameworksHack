@@ -83,13 +83,15 @@ void MatTriangle::setupObjects(std::vector<BaseObject> rightObj){
         float x = ofRandom(mGravityPoint.x - CREATE_RADIUS / 2,mGravityPoint.x + CREATE_RADIUS / 2);
         float y = ofRandom(mGravityPoint.y - CREATE_RADIUS / 2,mGravityPoint.y + CREATE_RADIUS / 2);
         ofVec2f position = ofVec2f(x,y);
+        
            mObjects.at(i).setup("particle32.png",mEPosition);
            mObjects.at(i).setupRangeOfTriangle(mPositions);
         
         float vX = ofRandom(-5,5);
-        float vY = ofRandom(-5,-5);
+        float vY = ofRandom(-5,5);
         ofVec2f velocity = ofVec2f(vX,vY);
-           mObjects.at(i).setupRightPosition(position);
+        mObjects.at(i).setVelocity(velocity);
+        mObjects.at(i).setupRightPosition(position);
         }
     }else{
         for(int i = 0; i < mObjects.size(); i++){
@@ -101,6 +103,7 @@ void MatTriangle::setupObjects(std::vector<BaseObject> rightObj){
             }
             mObjects.at(i).setup("particle32.png",w * mEPosition + j);
             mObjects.at(i).setupRangeOfTriangle(mPositions);
+            mObjects.at(i).setVelocity(rightObj.at(i).getVelocity());
             mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
         }
     }
@@ -141,7 +144,7 @@ void MatTriangle::update(std::vector<BaseObject> rightObj){//std::vector<BaseObj
        for(int i = 0 ; i < mObjects.size(); i++){
         if(mEPosition == RIGHT && !mIsMirror){
         }else{
-            mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
+    //        mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
 
         }
         mObjects.at(i).update();
