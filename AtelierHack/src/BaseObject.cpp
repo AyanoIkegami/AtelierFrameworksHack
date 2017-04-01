@@ -7,11 +7,11 @@
 //
 #include "BaseObject.hpp"
 
-void BaseObject::setup(string imageName,int index,ofColor color){
+void BaseObject::setup(string imageName,int index,ofColor color,bool isStrech){
     mImgName = imageName;
     mImg.load(imageName);
     mColor = color;
-    mRadius = 15;
+    mRadius = 20;
    // mPosition = position;
     mIndex = index;
   //  mVelocity = ofVec2f(ofRandom(-5,5),ofRandom(-5,5));
@@ -20,6 +20,7 @@ void BaseObject::setup(string imageName,int index,ofColor color){
     mFirstPosition = mPosition;
     mTheta = 0;
     mRadian = (TWO_PI/60)/6;  //6秒１回転。
+    mIsStrech = isStrech;
  
 }
 
@@ -44,7 +45,9 @@ void BaseObject::setVelocity(ofVec2f velocity){
 }
 
 void BaseObject::update(){
+    if(mIsStrech) {
      stretch();
+    }
    // circularMotion();
   //  wave();
     mTime += 1 * mI;

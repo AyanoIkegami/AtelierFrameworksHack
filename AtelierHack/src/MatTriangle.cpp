@@ -86,7 +86,7 @@ void MatTriangle::setupObjects(std::vector<BaseObject> rightObj){
                 j = 5;
                 w *= -1;
             }
-            mObjects.at(i).setup(rightObj.at(i).mImgName,w * mEPosition + j,rightObj.at(i).mColor);
+            mObjects.at(i).setup(rightObj.at(i).mImgName,w * mEPosition + j,rightObj.at(i).mColor,rightObj.at(i).mIsStrech);
             mObjects.at(i).setupRangeOfTriangle(mPositions);
             mObjects.at(i).setVelocity(rightObj.at(i).getVelocity());
             mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
@@ -118,9 +118,17 @@ void MatTriangle::setupRightObjects(std::vector<soundDataModel> sounds){
       /*  int r = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);
         int g = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);
         int b = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);*/
+        //伸縮するか
+        int strechFlag = (int)(sounds.at(i).mFreqPerBin * sounds.at(i).mDelta * sounds.at(i).mMaxVol)%2;
+        bool isStrech;
+        if(strechFlag == 0){
+            isStrech = true;
+        }else{
+            isStrech = false;
+        }
         ofColor color = ofColor();
         color.setHsb(h, 255, 255);
-        mObjects.at(i).setup(imgName,mEPosition,color);
+        mObjects.at(i).setup(imgName,mEPosition,color,isStrech);
         mObjects.at(i).setupRangeOfTriangle(mPositions);
     }
 
@@ -171,9 +179,9 @@ void MatTriangle::update(std::vector<BaseObject> rightObj){//std::vector<BaseObj
 }
 
 void MatTriangle::draw(){
-    ofSetColor(0, 0, 0);
+  /*  ofSetColor(0, 0, 0);
     ofNoFill();
-    ofDrawTriangle(mPositions[0],mPositions[1],mPositions[2]);
+    ofDrawTriangle(mPositions[0],mPositions[1],mPositions[2]);*/
     for(int i = 0; i < mObjects.size();i++){
             mObjects.at(i).draw();
     }

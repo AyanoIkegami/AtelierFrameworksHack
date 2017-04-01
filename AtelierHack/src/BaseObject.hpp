@@ -12,7 +12,7 @@
 class BaseObject{
 public:
     static const int NUM_TRIANGLE_POINT = 3;
-    virtual void setup(string imageName,int index,ofColor color);
+    virtual void setup(string imageName,int index,ofColor color,bool isStrech);
     virtual void setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT]);
     virtual void setupRightPosition(ofVec2f rightPosition);
     virtual void update();
@@ -33,6 +33,7 @@ public:
     ofVec2f mPosition;
     ofVec2f mRightPosition;
     ofVec2f mRightVector;
+    bool mIsStrech;
 protected:
     //ポジション移動
     void move();
