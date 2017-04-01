@@ -21,19 +21,18 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-    ofEasyCam cam;
     ofImage img;
     
-    float x, y;     //中心点の座標
-    float R;        //半径
-    float theta;    
-    float rad;
+    float mX, mY;     //中心点の座標
+    float mR;        //半径
+    float mTheta;
+    float mRad;
     
-    float position;　//初期位置
-    float time;     //経過時間
+    float mPosition; //初期位置
+    float mTime;     //経過時間
     
-    float A1, A2, A3;  //振幅
-    float w1, w2;      //角周波数（周期）
+    float mA1, mA2, mA3;  //振幅
+    float mW1, mW2;      //角周波数（周期）
     
     
    };
