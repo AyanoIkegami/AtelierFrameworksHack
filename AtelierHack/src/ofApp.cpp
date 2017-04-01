@@ -44,8 +44,11 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if(key == 'f'){
-        mIsKeyPressed = true;
-    }
+        if(!mIsKeyPressed){
+            mIsKeyPressed = true;
+            mSoundData.clear();
+        }
+           }
 }
 
 //--------------------------------------------------------------
