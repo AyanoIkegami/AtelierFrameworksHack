@@ -7,15 +7,15 @@
 //
 #include "BaseObject.hpp"
 
-void BaseObject::setup(string imageName,int index,ofColor color,bool isStrech){
+void BaseObject::setup(string imageName,int index,ofColor color,bool isStrech,int radius){
     mImgName = imageName;
     mImg.load(imageName);
     mColor = color;
-    mRadius = 20;
+    mRadius = radius;
    // mPosition = position;
     mIndex = index;
   //  mVelocity = ofVec2f(ofRandom(-5,5),ofRandom(-5,5));
-    mAmplitude = 25;
+    mAmplitude = radius;
     mCycle = 1;
     mFirstPosition = mPosition;
     mTheta = 0;

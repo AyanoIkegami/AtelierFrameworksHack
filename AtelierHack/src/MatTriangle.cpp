@@ -2,7 +2,7 @@
 //  MatTriangle.cpp
 //  AtelierHack
 //
-//  Created by 池上綾乃 on 2017/03/20.
+//  Created by Ê±†‰∏äÁ∂æ‰πÉ on 2017/03/20.
 //
 //
 
@@ -26,34 +26,34 @@ void MatTriangle::setup(E_TRIANGLE_POSITION ePosition,bool isMirror){
 }
 
 void MatTriangle::setupPosition(){
-    //台紙の中心の座標(全三角形共通の座標)
+    //Âè∞Á¥ô„ÅÆ‰∏≠ÂøÉ„ÅÆÂ∫ßÊ®ô(ÂÖ®‰∏âËßíÂΩ¢ÂÖ±ÈÄö„ÅÆÂ∫ßÊ®ô)
     mPositions[0] = ofVec2f(ofGetWidth()/2,ofGetHeight()/2);
     float x1,x2,y1,y2;
     switch (mEPosition) {
-            //六角形左上の三角形の位置
+            //ÂÖ≠ËßíÂΩ¢Â∑¶‰∏ä„ÅÆ‰∏âËßíÂΩ¢„ÅÆ‰ΩçÁΩÆ
         case LEFT:
-            //左端の頂点
+            //Â∑¶Á´Ø„ÅÆÈ†ÇÁÇπ
             x1 = - LENGTH;
             y1 = 0;
-            //上の頂点
+            //‰∏ä„ÅÆÈ†ÇÁÇπ
             x2 = - LENGTH / 2;
             y2 = - LENGTH /2 * sqrt(3);
             break;
-            //六角形中央上の三角形の位置
+            //ÂÖ≠ËßíÂΩ¢‰∏≠Â§Æ‰∏ä„ÅÆ‰∏âËßíÂΩ¢„ÅÆ‰ΩçÁΩÆ
         case CENTER:
-            //左上の頂点
+            //Â∑¶‰∏ä„ÅÆÈ†ÇÁÇπ
             x1 =  - LENGTH / 2;
             y1 =  - LENGTH /2 * sqrt(3);
-            //右上の頂点
+            //Âè≥‰∏ä„ÅÆÈ†ÇÁÇπ
             x2 = LENGTH/2;
             y2 = - LENGTH /2 * sqrt(3);
             break;
-            //六角形右上の三角形の位置
+            //ÂÖ≠ËßíÂΩ¢Âè≥‰∏ä„ÅÆ‰∏âËßíÂΩ¢„ÅÆ‰ΩçÁΩÆ
         case RIGHT:
-            //上の頂点
+            //‰∏ä„ÅÆÈ†ÇÁÇπ
             x1 = LENGTH/2;
             y1 = - LENGTH /2 * sqrt(3);
-            //右下の頂点
+            //Âè≥‰∏ã„ÅÆÈ†ÇÁÇπ
             x2 = LENGTH;
             y2 = 0;
             break;
@@ -70,7 +70,7 @@ void MatTriangle::setupPosition(){
     ofVec2f lineCenterPoint1 = linearFunction(mPositions[0], mPositions[1], 0);
     ofVec2f lineCenterPoint2 = linearFunction(mPositions[0], mPositions[2], 1);
     ofVec2f lineCenterPoint3 = linearFunction(mPositions[1], mPositions[2], 2);
-    //三角形の重心
+    //‰∏âËßíÂΩ¢„ÅÆÈáçÂøÉ
     mGravityPoint = ofVec2f((lineCenterPoint1.x+lineCenterPoint2.x+lineCenterPoint3.x)/3,(lineCenterPoint1.y+lineCenterPoint2.y+lineCenterPoint3.y)/3);
     
 }
@@ -86,7 +86,7 @@ void MatTriangle::setupObjects(std::vector<BaseObject> rightObj){
                 j = 5;
                 w *= -1;
             }
-            mObjects.at(i).setup(rightObj.at(i).mImgName,w * mEPosition + j,rightObj.at(i).mColor,rightObj.at(i).mIsStrech);
+            mObjects.at(i).setup(rightObj.at(i).mImgName,w * mEPosition + j,rightObj.at(i).mColor,rightObj.at(i).mIsStrech,rightObj.at(i).mRadius);
             mObjects.at(i).setupRangeOfTriangle(mPositions);
             mObjects.at(i).setVelocity(rightObj.at(i).getVelocity());
             mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
@@ -97,28 +97,28 @@ void MatTriangle::setupRightObjects(std::vector<soundDataModel> sounds){
     for (int i = 0;i < sounds.size(); i++) {
         BaseObject obj = *new BaseObject();
         mObjects.push_back(obj);
-        //生成位置
+        //ÁîüÊàê‰ΩçÁΩÆ
         float x = ofRandom(mGravityPoint.x - CREATE_RADIUS / 2 , mGravityPoint.x + CREATE_RADIUS / 2);
         float y = ofRandom(mGravityPoint.y - CREATE_RADIUS / 2 , mGravityPoint.y + CREATE_RADIUS / 2);
         ofVec2f position = ofVec2f(x,y);
-        //速度
+        //ÈÄüÂ∫¶
         float vX = sounds.at(i).mDelta /100 * ofRandom(-1.1,1.1);
         float vY = sounds.at(i).mDelta/100 * ofRandom(-1.1,1.1);
         
         ofVec2f velocity = ofVec2f(vX,vY);
         mObjects.at(i).setVelocity(velocity);
         mObjects.at(i).setupRightPosition(position);
-        //画像名
+        //ÁîªÂÉèÂêç
         int imgIndex = (int)sounds.at(i).mMaxVol % IMG_NUM;
         string imgName = IMG_NAMES[imgIndex];
-        //色
+        //Ëâ≤
         int h = (sounds.at(i).mLoudestBand * (int)sounds.at(i).mMaxVol) % 255;
       //  int s = (sounds.at(i).mLoudestBand * (int)sounds.at(i).mMaxVol) % 100;
       //  int v = (sounds.at(i).mLoudestBand * (int)sounds.at(i).mMaxVol) % 100;*/
       /*  int r = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);
         int g = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);
         int b = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);*/
-        //伸縮するか
+        //‰º∏Á∏Æ„Åô„Çã„Åã
         int strechFlag = (int)(sounds.at(i).mFreqPerBin * sounds.at(i).mDelta * sounds.at(i).mMaxVol)%2;
         bool isStrech;
         if(strechFlag == 0){
@@ -128,14 +128,16 @@ void MatTriangle::setupRightObjects(std::vector<soundDataModel> sounds){
         }
         ofColor color = ofColor();
         color.setHsb(h, 255, 255);
-        mObjects.at(i).setup(imgName,mEPosition,color,isStrech);
+        //初期サイズ
+        int size = (int)( sounds.at(i).mLoudestBand * sounds.at(i).mMaxVol + sounds.at(i).mFreqPerBin) % 35+ 10;
+        mObjects.at(i).setup(imgName,mEPosition,color,isStrech,size);
         mObjects.at(i).setupRangeOfTriangle(mPositions);
     }
 
 }
 
 ofVec2f MatTriangle::linearFunction(ofVec2f firstPosition,ofVec2f secondPosition,int index){
-    //この線における最大最小のy座標
+    //„Åì„ÅÆÁ∑ö„Å´„Åä„Åë„ÇãÊúÄÂ§ßÊúÄÂ∞è„ÅÆyÂ∫ßÊ®ô
     float minY,maxY;
     if(firstPosition.y > secondPosition.y){
         minY = secondPosition.y;
@@ -144,7 +146,7 @@ ofVec2f MatTriangle::linearFunction(ofVec2f firstPosition,ofVec2f secondPosition
         minY = firstPosition.y;
         maxY = secondPosition.y;
     }
-    //この線における最大最小のx座標
+    //„Åì„ÅÆÁ∑ö„Å´„Åä„Åë„ÇãÊúÄÂ§ßÊúÄÂ∞è„ÅÆxÂ∫ßÊ®ô
     float minX,maxX;
     if(firstPosition.x > secondPosition.x){
         minX = secondPosition.x;
@@ -154,7 +156,7 @@ ofVec2f MatTriangle::linearFunction(ofVec2f firstPosition,ofVec2f secondPosition
         maxX = secondPosition.x;
     }
     
-    //一次関数 y = ax + b に基づく変数名の定義
+    //‰∏ÄÊ¨°Èñ¢Êï∞ y = ax + b „Å´Âü∫„Å•„ÅèÂ§âÊï∞Âêç„ÅÆÂÆöÁæ©
     float x,y;
     x = firstPosition.x - secondPosition.x;
     y = firstPosition.y - secondPosition.y;

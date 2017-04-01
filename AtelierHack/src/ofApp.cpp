@@ -10,7 +10,7 @@ void ofApp::setup(){
     mSound.setup();
     mSoundData.clear();
   //  ofToggleFullscreen();
-    ofSetFrameRate(15);
+    ofSetFrameRate(20);
     bool isMirror = false;
     int mObjectNum = ofRandom(1,100);
     for(int i = 0; i < MAT_NUM; i ++){
