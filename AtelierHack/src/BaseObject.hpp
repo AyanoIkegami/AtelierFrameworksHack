@@ -26,6 +26,8 @@ public:
     static const int LENGTH = 300;
     bool isUseEffects[NUM_EFFECT];
     bool mIsMirror = true;
+    //画像名
+    string mImgName;
     //２次元座標(ランダムでもいいかも）
     ofVec2f mPosition;
     ofVec2f mRightPosition;

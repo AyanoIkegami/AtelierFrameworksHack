@@ -4,6 +4,8 @@
 #include "MatTriangle.hpp"
 #include "BaseObject.hpp"
 #include <vector>
+#include "GetSound.hpp"
+//#include "soundDataModel.hpp"
 class ofApp : public ofBaseApp{
 
 	public:
@@ -22,6 +24,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+    GetSound mSound;
+    std::vector<soundDataModel> mSoundData;
+    bool mIsKeyPressed = false;
+    
   /*  ofImage img;
     
     float mX, mY;     //中心点の座標
@@ -39,6 +45,7 @@ private:
     int mObjectNum;
     static const int MAT_NUM = 2;
     static const int TRIANGLE_NUM = 3;
+    static const int MAX_PARTICLE_NUM = 100;
     MatTriangle mTriangles[TRIANGLE_NUM * MAT_NUM];
     
    };

@@ -13,17 +13,14 @@ float CENTER_X;
 MatTriangle::MatTriangle(){
     
 }
-void MatTriangle::setup(E_TRIANGLE_POSITION ePosition,bool isMirror, int objNum){
-    for(int i = 0;i < objNum;i++){
-        BaseObject obj = *new BaseObject();
-        mObjects.push_back(obj);
-    }
-    
+void MatTriangle::setup(E_TRIANGLE_POSITION ePosition,bool isMirror){
+    IMG_NAMES ={"bubble.png","clock.png","clover.png","crystal.png","crystal2.png","crystal3.png","fillsquare.png","flower.png","gear.png","lace.png","lace2.png","moon.png","nofillsquare.png","particle32.png","rect.png","sakura.png","snow.png","square.png","star.png"} ;
     CREATE_RADIUS = LENGTH / 6 *sqrt(3);
     mIsMirror = isMirror;
     mEPosition = ePosition;
     CENTER_X = ofGetWidth()/2;
     CENTER_Y = ofGetHeight()/2;
+    mObjects.clear();
     setupPosition();
 
 }
@@ -78,22 +75,10 @@ void MatTriangle::setupPosition(){
     
 }
 void MatTriangle::setupObjects(std::vector<BaseObject> rightObj){
- if(mEPosition == RIGHT && !mIsMirror) {
-    for (int i = 0;i < mObjects.size(); i++) {
-        float x = ofRandom(mGravityPoint.x - CREATE_RADIUS / 2,mGravityPoint.x + CREATE_RADIUS / 2);
-        float y = ofRandom(mGravityPoint.y - CREATE_RADIUS / 2,mGravityPoint.y + CREATE_RADIUS / 2);
-        ofVec2f position = ofVec2f(x,y);
-        
-           mObjects.at(i).setup("particle32.png",mEPosition);
-           mObjects.at(i).setupRangeOfTriangle(mPositions);
-        
-        float vX = ofRandom(-5,5);
-        float vY = ofRandom(-5,5);
-        ofVec2f velocity = ofVec2f(vX,vY);
-        mObjects.at(i).setVelocity(velocity);
-        mObjects.at(i).setupRightPosition(position);
-        }
-    }else{
+    for(int i = 0;i < rightObj.size();i++){
+        BaseObject obj = *new BaseObject();
+        mObjects.push_back(obj);
+    }
         for(int i = 0; i < mObjects.size(); i++){
             int j = 0;
             int w = 1;
@@ -101,12 +86,35 @@ void MatTriangle::setupObjects(std::vector<BaseObject> rightObj){
                 j = 5;
                 w *= -1;
             }
-            mObjects.at(i).setup("particle32.png",w * mEPosition + j);
+            mObjects.at(i).setup(rightObj.at(i).mImgName,w * mEPosition + j);
             mObjects.at(i).setupRangeOfTriangle(mPositions);
             mObjects.at(i).setVelocity(rightObj.at(i).getVelocity());
             mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
         }
+}
+
+void MatTriangle::setupRightObjects(std::vector<soundDataModel> sounds){
+    for (int i = 0;i < sounds.size(); i++) {
+        BaseObject obj = *new BaseObject();
+        mObjects.push_back(obj);
+        //生成位置
+        float x = ofRandom(mGravityPoint.x - CREATE_RADIUS / 2 , mGravityPoint.x + CREATE_RADIUS / 2);
+        float y = ofRandom(mGravityPoint.y - CREATE_RADIUS / 2 , mGravityPoint.y + CREATE_RADIUS / 2);
+        ofVec2f position = ofVec2f(x,y);
+        //速度
+        float vX = sounds.at(i).mDelta /100 * ofRandom(-1.1,1.1);
+        float vY = sounds.at(i).mDelta/100 * ofRandom(-1.1,1.1);
+        
+        ofVec2f velocity = ofVec2f(vX,vY);
+        mObjects.at(i).setVelocity(velocity);
+        mObjects.at(i).setupRightPosition(position);
+        //画像名
+        int imgIndex = (int)sounds.at(i).mLoudestBand % IMG_NUM;
+        string imgName = IMG_NAMES[imgIndex];
+        mObjects.at(i).setup(imgName,mEPosition);
+        mObjects.at(i).setupRangeOfTriangle(mPositions);
     }
+
 }
 
 ofVec2f MatTriangle::linearFunction(ofVec2f firstPosition,ofVec2f secondPosition,int index){
@@ -149,7 +157,7 @@ void MatTriangle::update(std::vector<BaseObject> rightObj){//std::vector<BaseObj
         }
         mObjects.at(i).update();
 
-        }
+       }
        
 }
 

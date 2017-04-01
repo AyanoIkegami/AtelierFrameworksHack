@@ -6,7 +6,9 @@
 //
 //
 #include "BaseObject.hpp"
+
 void BaseObject::setup(string imageName,int index){
+    mImgName = imageName;
     mImg.load(imageName);
     mRadius = 50;
    // mPosition = position;
@@ -90,7 +92,6 @@ void BaseObject::reflect(){
     mVelocity *= judgeInOrOut();
     mPosition += mVelocity;
 }
-
 
 ofVec2f BaseObject::judgeInOrOut(){
     bool isPlus[3];

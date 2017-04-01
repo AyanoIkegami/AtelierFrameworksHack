@@ -16,17 +16,16 @@ void GetSound::update(){
     mFft.update();
 }
 
-void GetSound::SettingVariable(){
-    
+soundDataModel GetSound::SettingVariable(){
+    soundDataModel model = *new soundDataModel();
     //変数取得
-    mLoudestBand = mFft.getLoudBand();
-    mMaxVol= mFft.getUnScaledLoudestValue();
-    mSuperLowEqAvg = mFft.getSuperLowVal();
-    mLowEqAvg = mFft.getLowVal();
-    mMidEqAvg = mFft.getMidVal();
-    mHighEqAvg = mFft.getHighVal();
-    mDelta = mFft.getDelta();
-    mFreqPerBin = (ofMap(mFft.getExponent(), 0, 0.23, 0, 5000)/ mFft.getNumFFTbins()) * mLoudestBand;
-    
-    
+    model.mLoudestBand = mFft.getLoudBand();
+    model.mMaxVol= mFft.getUnScaledLoudestValue();
+    model.mSuperLowEqAvg = mFft.getSuperLowVal();
+    model.mLowEqAvg = mFft.getLowVal();
+    model.mMidEqAvg = mFft.getMidVal();
+    model.mHighEqAvg = mFft.getHighVal();
+    model.mDelta = mFft.getDelta();
+    model.mFreqPerBin = (ofMap(mFft.getExponent(), 0, 0.23, 0, 5000)/ mFft.getNumFFTbins()) * model.mLoudestBand;
+    return model;
 }
