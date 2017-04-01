@@ -25,6 +25,7 @@ void BaseObject::setupRightPosition(ofVec2f RightPosition){
     mPosition = RightPosition;
     if(mIndex!=0){
         move();
+        changeVector();
     }
 }
 
@@ -47,7 +48,7 @@ void BaseObject::update(){
     //if(mIndex == 0){
         mPosition += mVelocity;
  //   }
-//      reflect();
+      reflect();
 
 }
 
@@ -63,12 +64,16 @@ void BaseObject::move(){
     mPosition.x = ofGetWidth()/2 + r * cos(radian);
     mPosition.y = ofGetHeight()/2 + r * sin(radian);
     
+   }
+
+void BaseObject::changeVector(){
     //方向計算
     //速度ベクトルの長さ
     float length = sqrt(pow(mRightVector.x,2)+pow(mRightVector.y, 2));
     float vRadian = /*acos(mRightVector.x / length) +*/ - (60 * (mIndex) * PI / 180);
     mVelocity.x = mRightVector.x * cos(vRadian) - mRightVector.y * sin(vRadian);
     mVelocity.y = mRightVector.x * sin(vRadian) + mRightVector.y * cos(vRadian);
+
 }
 
 void BaseObject::draw(){
@@ -104,11 +109,11 @@ ofVec2f BaseObject::judgeInOrOut(){
             minusCount ++;
         }
     }
-    if((minusCount ==3 && mIsMirror) || (minusCount == 0 && !mIsMirror)) {
+    if((minusCount ==3 && mIsMirror) || (minusCount == 0 )) {
         //直進、中側にある
         return ofVec2f(1,1);
     }else{
-        return ofVec2f(-ofRandom(0.8,1.2),-ofRandom(0.8,1.2));
+        return ofVec2f(-1,-1);//ofRandom(0.8,1.2),-ofRandom(0.8,1.2));
     }
     
 }

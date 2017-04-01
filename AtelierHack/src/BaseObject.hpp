@@ -18,19 +18,23 @@ public:
     virtual void update();
     virtual void draw();
     virtual void setVelocity(ofVec2f vector);
+    virtual void setRightVector(ofVec2f vector);
+    virtual ofVec2f getVelocity();
        //エフェクト数
     static const int NUM_EFFECT = 4;
      //エフェクト適用するかどうかのフラグ配列
     static const int LENGTH = 300;
     bool isUseEffects[NUM_EFFECT];
-    bool mIsMirror;
+    bool mIsMirror = true;
     //２次元座標(ランダムでもいいかも）
     ofVec2f mPosition;
     ofVec2f mRightPosition;
-
+    ofVec2f mRightVector;
 protected:
     //ポジション移動
     void move();
+    //ベクトル向き変更
+    void changeVector();
     //反射
     virtual void reflect();
     //反射を実装するための一次関数

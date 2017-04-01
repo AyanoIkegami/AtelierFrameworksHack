@@ -157,7 +157,6 @@ void MatTriangle::draw(){
     ofSetColor(255, 255, 255);
     ofNoFill();
     ofDrawTriangle(mPositions[0],mPositions[1],mPositions[2]);
-    ofDrawCircle(mGravityPoint, CREATE_RADIUS);
     for(int i = 0; i < mObjects.size();i++){
             mObjects.at(i).draw();
     }
