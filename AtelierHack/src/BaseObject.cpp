@@ -6,50 +6,88 @@
 //
 //
 #include "BaseObject.hpp"
-void BaseObject::setup(string imageName,ofVec2f position){
+void BaseObject::setup(string imageName,int index){
     mImg.load(imageName);
     mRadius = 50;
-    mPosition = position;
-    mVelocity = ofVec2f(ofRandom(-5,5),ofRandom(-5,5));
+   // mPosition = position;
+    mIndex = index;
+  //  mVelocity = ofVec2f(ofRandom(-5,5),ofRandom(-5,5));
     mAmplitude = 25;
     mCycle = 1;
-    mFirstPosition = position;
+    mFirstPosition = mPosition;
     mTheta = 0;
     mRadian = (TWO_PI/60)/6;  //6秒１回転。
  
 }
 
-void BaseObject::setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT],float linearA[NUM_TRIANGLE_POINT],float linearB[NUM_TRIANGLE_POINT], ofVec2f gravityPoint){
+void BaseObject::setupRightPosition(ofVec2f RightPosition){
+    mRightPosition = RightPosition;
+    mPosition = RightPosition;
+    if(mIndex!=0){
+        move();
+        changeVector();
+    }
+}
+
+void BaseObject::setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT]){
     for(int i = 0; i < NUM_TRIANGLE_POINT; i++){
         mTrianglePoints[i] = trianglePoints[i];
     }
 }
 
+void BaseObject::setVelocity(ofVec2f velocity){
+    mRightVector = velocity;
+    mVelocity = velocity;
+}
+
 void BaseObject::update(){
-    reflect();
-    stretch();
+    // stretch();
    // circularMotion();
+  //  wave();
     mTime += 1 * mI;
+    //if(mIndex == 0){
+        mPosition += mVelocity;
+ //   }
+      reflect();
+
+}
+
+void BaseObject::move(){
+    float yLength = ofGetHeight()/2 -  mRightPosition.y;
+    float xLength = mRightPosition.x - ofGetWidth()/2;
+    float r = sqrt(pow(xLength, 2)+pow(yLength,2));
+    float sinTheta = yLength / r;
+    float cosTheta = xLength / r;
+    float radian = -acos(cosTheta) -((60 *(mIndex)) * PI / 180);
+    float cosRadian = cos(radian);
+    float sinRadian = sin(radian);
+    mPosition.x = ofGetWidth()/2 + r * cos(radian);
+    mPosition.y = ofGetHeight()/2 + r * sin(radian);
+    
+   }
+
+void BaseObject::changeVector(){
+    //方向計算
+    //速度ベクトルの長さ
+    float length = sqrt(pow(mRightVector.x,2)+pow(mRightVector.y, 2));
+    float vRadian = /*acos(mRightVector.x / length) +*/ - (60 * (mIndex) * PI / 180);
+    mVelocity.x = mRightVector.x * cos(vRadian) - mRightVector.y * sin(vRadian);
+    mVelocity.y = mRightVector.x * sin(vRadian) + mRightVector.y * cos(vRadian);
+
 }
 
 void BaseObject::draw(){
-   // ofDrawCircle(mPosition, 10);
+    //ofDrawCircle(mPosition, 10);//+mIndex*5);
    // mImg.draw(mPosition, mPosition.y, mPosition.y);
-    mImg.draw(mPosition,mRadius,mRadius);
-   // mImg.draw(mPosition.x, mPosition.y, 50,50);
+ //   mImg.draw(mPosition,mRadius,mRadius);
+   //mImg.draw(mPosition.x, mPosition.y, 50,50);
+    ofPoint p = ofPoint(mPosition.x-mRadius/2,mPosition.y-mRadius/2);
+    
+    mImg.draw(p, mRadius, mRadius);
 }
 
 void BaseObject::reflect(){
     mVelocity *= judgeInOrOut();
-   /* if(judgeInOrOut() == ofVec2f(-1,-1)){
-        float valueX = mVelocity.x / abs(mVelocity.x);
-        float valueY = mVelocity.y / abs(mVelocity.y);
-        Velocity.x = (mPosition.x + 30 * cos(ofRandom(180)))/ofGetFrameRate() * valueX;
-      　mVelocity.y = (mPosition.y + 30 * sin(ofRandom(180)))/ofGetFrameRate() * valueY;
-       // mVelocity.x = ofRandom(3) * valueX;
-       // mVelocity.y = ofRandom(3) * valueY;
-    }*/
-    
     mPosition += mVelocity;
 }
 
@@ -71,11 +109,11 @@ ofVec2f BaseObject::judgeInOrOut(){
             minusCount ++;
         }
     }
-    if((minusCount ==3 && mIsMirror) || (minusCount == 0 && !mIsMirror)) {
+    if((minusCount ==3 && mIsMirror) || (minusCount == 0 )) {
         //直進、中側にある
         return ofVec2f(1,1);
     }else{
-        return ofVec2f(-ofRandom(0.8,1.2),-ofRandom(0.8,1.2));
+        return ofVec2f(-1,-1);//ofRandom(0.8,1.2),-ofRandom(0.8,1.2));
     }
     
 }
@@ -92,7 +130,6 @@ void BaseObject::circularMotion(){
     mPosition.y = -mRadius*sin(mTheta) + mFirstPosition.y;
     mTheta += mRadian; //時間を進める
     if (mTheta >= TWO_PI) mTheta = 0;
-
 }
 
 void BaseObject::blink(){
@@ -103,7 +140,7 @@ void BaseObject::blink(){
 
 void BaseObject::stretch(){
     //伸縮
-    mRadius = mAmplitude + mTime ;//*sin(mTime) +100;
+    mRadius = mAmplitude + mTime;//*sin(mTime) +100;
   //  mPosition = mFirstPosition - mRadius* 0.5;
     if (mTime > TWO_PI*6){
         mI = -1;
@@ -112,6 +149,25 @@ void BaseObject::stretch(){
     if(mTime == 0) {
         mI = 1;
     }
+}
+
+void BaseObject::wave(){
+    mPosition.x = mTime*100;
+    mPosition.y = mAmplitude* sin(mTime + mPosition.y);
+    mImg.draw(mPosition.x+ofGetWidth()/4, mPosition.y + ofGetHeight()/2, 50);
+    //time += rad;    //時間を進める
+    mTime += mCycle * mRadian;
+    if (mTime > TWO_PI) mCycle = -1;
+    if(mTime <= 0) mCycle = 1;
+
+}
+
+ofVec2f BaseObject::getVelocity(){
+    return mVelocity;
+}
+
+void BaseObject::setRightVector(ofVec2f vector){
+    mRightVector = vector;
 }
 
 

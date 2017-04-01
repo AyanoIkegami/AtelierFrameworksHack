@@ -8,9 +8,13 @@
 
 #include "Mat.hpp"
 
-void Mat::setup(bool isMirror){
+Mat::Mat(){
+    
+}
+void Mat::setup(bool isMirror,std::vector<BaseObject> objs){
+    mObjects = objs;
      for(int i = 0 ; i < TRIANGLE_NUM; i++){
-         mTriangles[i].setup((MatTriangle::E_TRIANGLE_POSITION)i,isMirror);
+         mTriangles[i].setup((MatTriangle::E_TRIANGLE_POSITION)i,isMirror,mObjects);
      }
 }
 

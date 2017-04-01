@@ -10,15 +10,22 @@
 
 float CENTER_Y;
 float CENTER_X;
-
-void MatTriangle::setup(E_TRIANGLE_POSITION ePosition,bool isMirror){
-    CREATE_RADIUS = LENGTH / 2 / sqrt(3);
+MatTriangle::MatTriangle(){
+    
+}
+void MatTriangle::setup(E_TRIANGLE_POSITION ePosition,bool isMirror, int objNum){
+    for(int i = 0;i < objNum;i++){
+        BaseObject obj = *new BaseObject();
+        mObjects.push_back(obj);
+    }
+    
+    CREATE_RADIUS = LENGTH / 6 *sqrt(3);
     mIsMirror = isMirror;
     mEPosition = ePosition;
     CENTER_X = ofGetWidth()/2;
     CENTER_Y = ofGetHeight()/2;
     setupPosition();
-    setupObjects();
+
 }
 
 void MatTriangle::setupPosition(){
@@ -70,14 +77,36 @@ void MatTriangle::setupPosition(){
     mGravityPoint = ofVec2f((lineCenterPoint1.x+lineCenterPoint2.x+lineCenterPoint3.x)/3,(lineCenterPoint1.y+lineCenterPoint2.y+lineCenterPoint3.y)/3);
     
 }
-void MatTriangle::setupObjects(){
-    
-    float x = ofRandom(mGravityPoint.x - CREATE_RADIUS,mGravityPoint.x + CREATE_RADIUS);
-    float y = ofRandom(mGravityPoint.y - CREATE_RADIUS,mGravityPoint.y + CREATE_RADIUS);
-    ofVec2f position = ofVec2f(x,y);
-    mParticles[0].setup("particle32.png",position);
-    mParticles[0].setupRangeOfTriangle(mPositions, mA, mB, mGravityPoint);
-    mParticles[0].mIsMirror = mIsMirror;
+void MatTriangle::setupObjects(std::vector<BaseObject> rightObj){
+ if(mEPosition == RIGHT && !mIsMirror) {
+    for (int i = 0;i < mObjects.size(); i++) {
+        float x = ofRandom(mGravityPoint.x - CREATE_RADIUS / 2,mGravityPoint.x + CREATE_RADIUS / 2);
+        float y = ofRandom(mGravityPoint.y - CREATE_RADIUS / 2,mGravityPoint.y + CREATE_RADIUS / 2);
+        ofVec2f position = ofVec2f(x,y);
+        
+           mObjects.at(i).setup("particle32.png",mEPosition);
+           mObjects.at(i).setupRangeOfTriangle(mPositions);
+        
+        float vX = ofRandom(-5,5);
+        float vY = ofRandom(-5,5);
+        ofVec2f velocity = ofVec2f(vX,vY);
+        mObjects.at(i).setVelocity(velocity);
+        mObjects.at(i).setupRightPosition(position);
+        }
+    }else{
+        for(int i = 0; i < mObjects.size(); i++){
+            int j = 0;
+            int w = 1;
+            if(mIsMirror){
+                j = 5;
+                w *= -1;
+            }
+            mObjects.at(i).setup("particle32.png",w * mEPosition + j);
+            mObjects.at(i).setupRangeOfTriangle(mPositions);
+            mObjects.at(i).setVelocity(rightObj.at(i).getVelocity());
+            mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
+        }
+    }
 }
 
 ofVec2f MatTriangle::linearFunction(ofVec2f firstPosition,ofVec2f secondPosition,int index){
@@ -111,15 +140,26 @@ ofVec2f MatTriangle::linearFunction(ofVec2f firstPosition,ofVec2f secondPosition
     return lineCenterPoint;
 }
 
-void MatTriangle::update(){
-    mParticles[0].update();
+void MatTriangle::update(std::vector<BaseObject> rightObj){//std::vector<BaseObject>rObjs){
+       for(int i = 0 ; i < mObjects.size(); i++){
+        if(mEPosition == RIGHT && !mIsMirror){
+        }else{
+    //        mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
+
+        }
+        mObjects.at(i).update();
+
+        }
+       
 }
 
 void MatTriangle::draw(){
     ofSetColor(255, 255, 255);
     ofNoFill();
     ofDrawTriangle(mPositions[0],mPositions[1],mPositions[2]);
-    ofDrawCircle(mGravityPoint, CREATE_RADIUS);
-    mParticles[0].draw();
+    for(int i = 0; i < mObjects.size();i++){
+            mObjects.at(i).draw();
+    }
+  
 }
 

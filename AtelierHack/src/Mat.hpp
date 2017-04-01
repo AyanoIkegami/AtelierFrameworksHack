@@ -8,17 +8,20 @@
 #pragma once
 #include <stdio.h>
 #include "ofMain.h"
+#include "BaseObject.hpp"
+#include <vector>
 #include "MatTriangle.hpp"
-
+class MatTriangle;
 class Mat {
 public:
-    void setup(bool isMirror);
+    Mat();
+    void setup(bool isMirror, std::vector<BaseObject> objs);
     void update();
     void draw();
     void rotateX();
     static const int TRIANGLE_NUM = 3;
+    std::vector<BaseObject> mObjects;
 private:
-    MatTriangle mTriangles[TRIANGLE_NUM];
-    ofVec2f mMatPosition; //台紙の基準となる位置
+      ofVec2f mMatPosition; //台紙の基準となる位置
     bool mIsMirror;
-};
+  };
