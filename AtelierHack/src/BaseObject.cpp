@@ -7,10 +7,11 @@
 //
 #include "BaseObject.hpp"
 
-void BaseObject::setup(string imageName,int index){
+void BaseObject::setup(string imageName,int index,ofColor color){
     mImgName = imageName;
     mImg.load(imageName);
-    mRadius = 50;
+    mColor = color;
+    mRadius = 15;
    // mPosition = position;
     mIndex = index;
   //  mVelocity = ofVec2f(ofRandom(-5,5),ofRandom(-5,5));
@@ -43,7 +44,7 @@ void BaseObject::setVelocity(ofVec2f velocity){
 }
 
 void BaseObject::update(){
-    // stretch();
+     stretch();
    // circularMotion();
   //  wave();
     mTime += 1 * mI;
@@ -84,7 +85,7 @@ void BaseObject::draw(){
  //   mImg.draw(mPosition,mRadius,mRadius);
    //mImg.draw(mPosition.x, mPosition.y, 50,50);
     ofPoint p = ofPoint(mPosition.x-mRadius/2,mPosition.y-mRadius/2);
-    
+    ofSetColor(ofColor::fromHsb(mColor.getHue(),255,255) ,255);
     mImg.draw(p, mRadius, mRadius);
 }
 
@@ -143,7 +144,7 @@ void BaseObject::stretch(){
     //伸縮
     mRadius = mAmplitude + mTime;//*sin(mTime) +100;
   //  mPosition = mFirstPosition - mRadius* 0.5;
-    if (mTime > TWO_PI*6){
+    if (mTime > TWO_PI*3){
         mI = -1;
     }
     

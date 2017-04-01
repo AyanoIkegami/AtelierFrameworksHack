@@ -18,7 +18,7 @@ public:
     enum E_TRIANGLE_POSITION {RIGHT,CENTER,LEFT};
     void setup(E_TRIANGLE_POSITION ePosition, bool isMirror);
     void update(std::vector<BaseObject> rightObj);//std::vector<BaseObject> rObjs);
-    void draw();    constexpr static const float LENGTH = 300;
+    void draw();    constexpr static const float LENGTH = 400;
     void setupObjects(std::vector<BaseObject> rightObj);
     void setupRightObjects(std::vector<soundDataModel> sounds);
 

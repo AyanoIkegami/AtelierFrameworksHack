@@ -86,7 +86,7 @@ void MatTriangle::setupObjects(std::vector<BaseObject> rightObj){
                 j = 5;
                 w *= -1;
             }
-            mObjects.at(i).setup(rightObj.at(i).mImgName,w * mEPosition + j);
+            mObjects.at(i).setup(rightObj.at(i).mImgName,w * mEPosition + j,rightObj.at(i).mColor);
             mObjects.at(i).setupRangeOfTriangle(mPositions);
             mObjects.at(i).setVelocity(rightObj.at(i).getVelocity());
             mObjects.at(i).setupRightPosition(rightObj.at(i).mPosition);
@@ -109,9 +109,18 @@ void MatTriangle::setupRightObjects(std::vector<soundDataModel> sounds){
         mObjects.at(i).setVelocity(velocity);
         mObjects.at(i).setupRightPosition(position);
         //画像名
-        int imgIndex = (int)sounds.at(i).mLoudestBand % IMG_NUM;
+        int imgIndex = (int)sounds.at(i).mMaxVol % IMG_NUM;
         string imgName = IMG_NAMES[imgIndex];
-        mObjects.at(i).setup(imgName,mEPosition);
+        //色
+        int h = (sounds.at(i).mLoudestBand * (int)sounds.at(i).mMaxVol) % 255;
+      //  int s = (sounds.at(i).mLoudestBand * (int)sounds.at(i).mMaxVol) % 100;
+      //  int v = (sounds.at(i).mLoudestBand * (int)sounds.at(i).mMaxVol) % 100;*/
+      /*  int r = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);
+        int g = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);
+        int b = sounds.at(i).mLoudestBand+1 * ofRandom(1,8);*/
+        ofColor color = ofColor();
+        color.setHsb(h, 255, 255);
+        mObjects.at(i).setup(imgName,mEPosition,color);
         mObjects.at(i).setupRangeOfTriangle(mPositions);
     }
 
@@ -162,7 +171,7 @@ void MatTriangle::update(std::vector<BaseObject> rightObj){//std::vector<BaseObj
 }
 
 void MatTriangle::draw(){
-    ofSetColor(255, 255, 255);
+    ofSetColor(0, 0, 0);
     ofNoFill();
     ofDrawTriangle(mPositions[0],mPositions[1],mPositions[2]);
     for(int i = 0; i < mObjects.size();i++){

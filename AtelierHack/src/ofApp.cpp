@@ -3,14 +3,14 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    ofBackground(0, 0, 0);
+    ofBackground(255, 255, 255);
     ofSetVerticalSync(true);
     ofEnableAlphaBlending();
     
     mSound.setup();
     mSoundData.clear();
   //  ofToggleFullscreen();
-    ofSetFrameRate(60);
+    ofSetFrameRate(10);
     bool isMirror = false;
     int mObjectNum = ofRandom(1,100);
     for(int i = 0; i < MAT_NUM; i ++){
@@ -45,7 +45,6 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
     if(key == 'f'){
         mIsKeyPressed = true;
-        mSoundData.clear();
     }
 }
 

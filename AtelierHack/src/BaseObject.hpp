@@ -12,7 +12,7 @@
 class BaseObject{
 public:
     static const int NUM_TRIANGLE_POINT = 3;
-    virtual void setup(string imageName,int index);
+    virtual void setup(string imageName,int index,ofColor color);
     virtual void setupRangeOfTriangle(ofVec2f trianglePoints[NUM_TRIANGLE_POINT]);
     virtual void setupRightPosition(ofVec2f rightPosition);
     virtual void update();
@@ -23,12 +23,13 @@ public:
        //エフェクト数
     static const int NUM_EFFECT = 4;
      //エフェクト適用するかどうかのフラグ配列
-    static const int LENGTH = 300;
+    static const int LENGTH = 400;
     bool isUseEffects[NUM_EFFECT];
     bool mIsMirror = true;
     //画像名
     string mImgName;
     //２次元座標(ランダムでもいいかも）
+    ofColor mColor;
     ofVec2f mPosition;
     ofVec2f mRightPosition;
     ofVec2f mRightVector;
@@ -62,8 +63,7 @@ protected:
     ofVec2f mFirstPosition;
     //速度
     ofVec2f mVelocity;
-    //色
-    ofColor mColor;
+
     //画像
     ofImage mImg;
     //振幅
